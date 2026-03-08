@@ -1,0 +1,7 @@
+TANGENT = 't'
+ADJOINT = 'a'
+F = 'F'
+X = 'X'
+Y = 'Y'
+MU = 'u'
+NU = 'v'
