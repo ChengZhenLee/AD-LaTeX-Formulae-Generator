@@ -5,7 +5,7 @@
 This project is part of the HiWi position at the Software Tools for Computational Engineering group at RWTH Aachen University.
 
 ## Purpose
-[Describe the main purpose and objectives of the AD (Automatic Differentiation) task]
+Generate the derivative formulae for arbitrary orders of algorithmic differentiation in both tangent and adjoint mode.
 
 ## Getting Started
 
