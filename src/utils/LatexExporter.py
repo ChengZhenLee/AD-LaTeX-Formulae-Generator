@@ -22,7 +22,8 @@ class LatexExporter:
             "\\usepackage[utf8]{inputenc}",
             "\\usepackage{amsmath}",
             "\\usepackage[margin=1in]{geometry}",
-            "\\usepackage{color}",
+            "\\usepackage[dvipsnames]{xcolor}",
+            "\\allowdisplaybreaks",
             "\\begin{document}",
             "\\section*{Generated Derivatives}",
             "\\begin{align*}"

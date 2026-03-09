@@ -10,11 +10,13 @@ START_EQUATION = "\\mathbf{y}_j &= F(\\mathbf{x}_i)"
 LINEBREAK = "\\\\[1em]"
 
 ORDER_COLORS = {
-    "1": "black",
-    "2": "blue",
-    "3": "red",
-    "4": "orange",
-    "5": "purple"
+    "1": "Black",
+    "2": "Blue",
+    "3": "Red",
+    "4": "ForestGreen",
+    "5": "Orange",
+    "6": "RoyalPurple",
+    "7": "Sepia",
 }
 
 FILENAME = "Formulae"
