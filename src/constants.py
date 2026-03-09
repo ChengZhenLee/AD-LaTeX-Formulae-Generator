@@ -16,3 +16,5 @@ ORDER_COLORS = {
     "4": "orange",
     "5": "purple"
 }
+
+FILENAME = "Derivative"

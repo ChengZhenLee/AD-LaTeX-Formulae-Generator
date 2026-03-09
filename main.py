@@ -1,31 +1,31 @@
-from constants import START_EQUATION, LINEBREAK
-from DerivativeComputer import DerivativeComputer
-from equation import Equation
+from src.DerivativeComputer import DerivativeComputer
+from src.utils.LatexExporter import LatexExporter
+from src.notation.equation import Equation
+from src.constants import FILENAME
 
 
-def main():
-    isValid:bool = False
-    inputModes:str = ""
-    while (not isValid):
-        userInput:str = input("Enter derivative modes e.g. 'taa' for Tangent over Adjoint over Adjoint\n" \
-        "Press 'e' to exit: \n")
+def runTool():
+    print("======================================")
+    print("   AD DERIVATIVE FORMULAE GENERATOR   ")
+    print("======================================")
+
+    while (True):
+        userInput:str = input("Enter derivative modes (e.g. 'taa' for Tangent over Adjoint over Adjoint) " \
+        "or press 'e' to exit: \n")
         inputModes = userInput.lower().strip()
 
-        if inputModes and all(char in ['t', 'a'] for char in inputModes):
-            print('-'*30)
-            print(START_EQUATION)
-            print(LINEBREAK)
-
-            equations:list[Equation] = DerivativeComputer.computeDerivative(inputModes, [])
-            for equation in equations:
-                print(equation)
-                print(LINEBREAK)
-            print('-'*30)
-            
-        
-        elif inputModes == 'e':
+        if inputModes == "e":
             break
+        
+        if inputModes and all(char in "ta" for char in inputModes):
+            equations:list[Equation] = DerivativeComputer.computeDerivative(inputModes, [])
+            LatexExporter.createLatex(equations, FILENAME)
+            print(f"LaTeX file generated as {FILENAME}.tex")
+        else:
+            print("Error: Use only 't' (Tangent) or 'a' (Adjoint).")
+
+        print()
 
 
 if __name__ == "__main__":
-    main()
+    runTool()

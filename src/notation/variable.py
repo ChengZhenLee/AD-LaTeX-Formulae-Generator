@@ -1,6 +1,6 @@
 from __future__ import annotations
-from index import Index
-import constants
+from src.notation.index import Index
+import src.constants as constants
 
 
 class Variable:

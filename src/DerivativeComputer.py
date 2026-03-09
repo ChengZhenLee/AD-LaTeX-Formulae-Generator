@@ -1,8 +1,8 @@
 from copy import deepcopy
-from equation import Equation
-from term import Term
-from variable import Variable, X, Y, F
-import constants
+from src.notation.equation import Equation
+from src.notation.monomial import Monomial
+from src.notation.variable import Variable, X, Y, F
+import src.constants as constants
 
 
 class DerivativeComputer(): 
@@ -38,7 +38,7 @@ class DerivativeComputer():
             
             for term in equation.right:
                 for i, var in enumerate(term.variables):
-                    newTerm:Term = Term([])
+                    newTerm:Monomial = Monomial([])
                     newVar:Variable = var.derive(constants.TANGENT, order=order)
 
                     tempVar:list[Variable] = term.variables.copy()
@@ -61,7 +61,7 @@ class DerivativeComputer():
         # Append the additional tangent "Y" equation
         newEquation:Equation = Equation(
             Y(constants.TANGENT, order=order),
-            right=[Term([F(order=order), X(constants.TANGENT, order=order)])],
+            right=[Monomial([F(order=order), X(constants.TANGENT, order=order)])],
             order=order
         )
         result.append(newEquation)
@@ -76,7 +76,7 @@ class DerivativeComputer():
 
         # Find all unique right hand side 'inputs'
         for equation in equations:
-            curRight:list[Term] = equation.right
+            curRight:list[Monomial] = equation.right
 
             for term in curRight:
                 variables:list[Variable] = term.variables
@@ -98,7 +98,7 @@ class DerivativeComputer():
 
                 for term in equation.right:
                     isIncluded:bool = False
-                    newTerm:Term = Term([])
+                    newTerm:Monomial = Monomial([])
 
                     for var in term.variables:
                         # Check if the variable in the current term is the unique input
@@ -120,7 +120,7 @@ class DerivativeComputer():
         # Form the output "X" equation
         newX:X = X(constants.ADJOINT, order=order)
         newEquation:Equation = Equation(left=newX, 
-            right=[Term([F(order=order), Y(constants.ADJOINT, order=order)])], 
+            right=[Monomial([F(order=order), Y(constants.ADJOINT, order=order)])], 
             order=order
         )
         for equation in equations:
@@ -133,7 +133,7 @@ class DerivativeComputer():
                 newF:Variable = f.derive()
 
                 # Append new terms to the new adjoint output equation
-                newTerm:Term = Term([newF] + term.variables[1:] + [newRightVar])
+                newTerm:Monomial = Monomial([newF] + term.variables[1:] + [newRightVar])
                 newEquation.right.append(newTerm)
 
         # Append the new equation for the adjoint output

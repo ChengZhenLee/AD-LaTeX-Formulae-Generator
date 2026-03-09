@@ -1,7 +1,7 @@
-from variable import Variable
+from src.notation.variable import Variable
 
 
-class Term:
+class Monomial:
     def __init__(self, variables:list[Variable]):
         self.variables = variables
 
