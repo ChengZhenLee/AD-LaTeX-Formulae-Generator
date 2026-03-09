@@ -7,8 +7,6 @@ This project is part of the HiWi position at the Software Tools for Computationa
 ## Purpose
 Generate the derivative formulae for arbitrary orders of algorithmic differentiation in both tangent and adjoint mode.
 
-## Getting Started
-
 ### Usage
 1. Run the command:
 ```bash
