@@ -1,20 +1,21 @@
 
-# AD LATEX FORMULAE GENERATOR
+# AD LaTeX Formulae Generator
 
 ## Overview
-This project is part of the HiWi position at the Software Tools for Computational Engineering group at RWTH Aachen University.
-
-## Purpose
-Generate LaTeX code that reflects formulae for arbitrary orders algorithmic differentiation in both tangent and adjoint mode.
+A Python tool to generate LaTeX derivations for arbitrary-order Algorithmic Differentiation (AD).
+Supports both Tangent and Adjoint modes.
 
 ### Usage
-1. Run the command:
+1. Make the script executable:
 ```bash
 chmod +x run_tool.sh
+```
 
+2. Run the tool:
+```
 ./run_tool.sh
 ```
 
-3. Follow the instructions written on the terminal.
+3. Follow the terminal prompts to specify the AD mode and the desired derivative order.
 
-2. The LaTeX code will be generated and can be found in the file `Formulae.tex`
+2. The generated LaTeX source is saved to `Formulae.tex`.
