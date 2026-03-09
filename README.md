@@ -18,4 +18,7 @@ chmod +x run_tool.sh
 
 3. Follow the terminal prompts to specify the AD mode and the desired derivative order.
 
-2. The generated LaTeX source is saved to `Formulae.tex`.
+4. The generated LaTeX source is saved to `Formulae.tex`.
+
+### Dependencies
+This project uses the Python3 standard library. No additional `pip` installations are required.
