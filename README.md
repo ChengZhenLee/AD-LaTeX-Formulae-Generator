@@ -5,7 +5,7 @@
 This project is part of the HiWi position at the Software Tools for Computational Engineering group at RWTH Aachen University.
 
 ## Purpose
-Generate the derivative formulae for arbitrary orders of algorithmic differentiation in both tangent and adjoint mode.
+Generate LaTeX code that reflects formulae for arbitrary orders algorithmic differentiation in both tangent and adjoint mode.
 
 ### Usage
 1. Run the command:
