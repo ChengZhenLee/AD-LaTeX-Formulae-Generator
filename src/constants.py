@@ -6,7 +6,7 @@ Y = 'Y'
 MU = '\\mu'
 NU = '\\nu'
 
-START_EQUATION = "\\mathbf{y}_j = F(\\mathbf{x}_i)"
+START_EQUATION = "\\mathbf{y}_j &= F(\\mathbf{x}_i)"
 LINEBREAK = "\\\\[1em]"
 
 ORDER_COLORS = {
@@ -17,4 +17,4 @@ ORDER_COLORS = {
     "5": "purple"
 }
 
-FILENAME = "Derivative"
+FILENAME = "Formulae"

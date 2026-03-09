@@ -6,8 +6,27 @@ import src.constants as constants
 
 
 class DerivativeComputer(): 
+
     @staticmethod
     def computeDerivative(modes:str, equations:list[Equation]=[])->list[Equation]:
+        """
+        Recursively computes derivative equations for a given sequence of differentiation modes.
+        This method processes a string of differentiation modes (tangent or adjoint) and applies
+        the corresponding derivative computations recursively. The recursion processes one mode
+        at a time from left to right, building up the derivative equations with each iteration.
+
+        Args:
+            modes (str): A string of differentiation mode identifiers where each character represents
+                        a mode to apply (e.g., 't' for tangent, 'a' for adjoint).
+            equations (list[Equation], optional): The list of equations to differentiate. Defaults to
+                                                an empty list. On the first call, this is typically
+                                                the initial set of equations; on recursive calls,
+                                                it contains previously computed derivatives.
+
+        Returns:
+            list[Equation]: A list of all equations including the original equations and all
+                        computed derivative equations corresponding to the applied modes.
+        """
         order = str(len(modes))
 
         # base case
@@ -26,9 +45,26 @@ class DerivativeComputer():
 
         return result
         
-    
+
     @staticmethod
+
     def _tangentMode(equations:list[Equation], order:str)->list[Equation]:
+        """
+        Compute tangent mode derivatives for a list of equations.
+        This function performs tangent mode automatic differentiation on a system of equations.
+        It derives each equation with respect to the tangent direction and generates new derivative
+        equations. Additionally, it constructs a tangent output equation for output y.
+
+        Args:
+            equations (list[Equation]): A list of Equation objects representing the original system.
+            order (str): The derivative order or tangent direction identifier.
+
+        Returns:
+            list[Equation]: A list of new equations containing:
+                - The original equations
+                - Derived versions of each original equation in tangent mode
+                - An additional equation for the tangent output Y in terms of F and tangent X
+        """
         result:list[Equation] = deepcopy(equations)
 
         # Perform tangent mode on the existing equations
@@ -36,24 +72,25 @@ class DerivativeComputer():
             newLeftVar:Variable = equation.left.derive(constants.TANGENT, order=order)
             newEquation:Equation = Equation(newLeftVar, [], order=order)
             
-            for term in equation.right:
-                for i, var in enumerate(term.variables):
-                    newTerm:Monomial = Monomial([])
+            for monomial in equation.right:
+                # Perform product rule on each variable in the monomial
+                for i, var in enumerate(monomial.variables):
+                    newMonomial:Monomial = Monomial([])
                     newVar:Variable = var.derive(constants.TANGENT, order=order)
 
-                    tempVar:list[Variable] = term.variables.copy()
+                    tempVar:list[Variable] = monomial.variables.copy()
                     tempVar.pop(i)
 
                     if var.name == constants.F:
                         # The function F should always be at the front
-                        newTerm.variables = [newVar]
-                        newTerm.variables += tempVar
-                        newTerm.variables.append(X(constants.TANGENT, order=order))
+                        newMonomial.variables = [newVar]
+                        newMonomial.variables += tempVar
+                        newMonomial.variables.append(X(constants.TANGENT, order=order))
                     else:
-                        newTerm.variables = tempVar
-                        newTerm.variables.append(newVar)
+                        newMonomial.variables = tempVar
+                        newMonomial.variables.append(newVar)
                     
-                    newEquation.right.append(newTerm)
+                    newEquation.right.append(newMonomial)
 
             result.append(newEquation)
 
@@ -68,9 +105,26 @@ class DerivativeComputer():
 
         return result
 
-    
+
     @staticmethod
     def _adjointMode(equations:list[Equation], order:str)->list[Equation]:
+        """
+        Computes the adjoint mode (reverse-mode automatic differentiation) for a system of equations.
+        This function performs adjoint mode algorithmic differentiation on a set of equations. For each 
+        unique input variable on the right-hand side of the equations, it generates a corresponding adjoint 
+        equation. Additionally, it constructs an adjoint output equation for variable x.#
+
+        Args:
+            equations (list[Equation]): A list of Equation objects representing the forward computational graph.
+                Each equation contains a left-hand side variable and right-hand side monomials (monomials).
+            order (str): The differentiation order to apply to derived variables in the adjoint equations.
+
+        Returns:
+            list[Equation]: A new list of equations containing:
+                - The original equations
+                - One adjoint equation for each unique input variable found in the right-hand sides
+                - One adjoint equation for the output variable X
+        """
         result:list[Equation] = deepcopy(equations)
         uniqueInputs:list[Variable] = []
 
@@ -78,8 +132,8 @@ class DerivativeComputer():
         for equation in equations:
             curRight:list[Monomial] = equation.right
 
-            for term in curRight:
-                variables:list[Variable] = term.variables
+            for monomial in curRight:
+                variables:list[Variable] = monomial.variables
 
                 for var in variables:
                     # Ignore if the variable is the function F
@@ -96,22 +150,22 @@ class DerivativeComputer():
             for equation in equations:
                 newRightVar:Variable = equation.left.derive(constants.ADJOINT, order=order)
 
-                for term in equation.right:
+                for monomial in equation.right:
                     isIncluded:bool = False
-                    newTerm:Monomial = Monomial([])
+                    newMonomial:Monomial = Monomial([])
 
-                    for var in term.variables:
-                        # Check if the variable in the current term is the unique input
+                    for var in monomial.variables:
+                        # Check if the variable in the current monomial is the unique input
                         if Variable.isEqual(var, uniqueInput):
                             isIncluded = True
                             pass
                         else:
-                            newTerm.variables.append(var)
+                            newMonomial.variables.append(var)
                     
                     # If the unique input was in the right-hand side of this equation
                     if isIncluded:
-                        newTerm.variables.append(newRightVar)
-                        newEquation.right.append(newTerm)
+                        newMonomial.variables.append(newRightVar)
+                        newEquation.right.append(newMonomial)
 
             # Append the new equation for each unique input
             result.append(newEquation)
@@ -126,15 +180,15 @@ class DerivativeComputer():
         for equation in equations:
             newRightVar:Variable = equation.left.derive(constants.ADJOINT, order=order)
 
-            for term in equation.right:
+            for monomial in equation.right:
 
-                # The first element of a term is always the function f
-                f:Variable = term.variables[0]
+                # The first element of a monomial is always the function f
+                f:Variable = monomial.variables[0]
                 newF:Variable = f.derive()
 
-                # Append new terms to the new adjoint output equation
-                newTerm:Monomial = Monomial([newF] + term.variables[1:] + [newRightVar])
-                newEquation.right.append(newTerm)
+                # Append new monomials to the new adjoint output equation
+                newMonomial:Monomial = Monomial([newF] + monomial.variables[1:] + [newRightVar])
+                newEquation.right.append(newMonomial)
 
         # Append the new equation for the adjoint output
         result.append(newEquation)
