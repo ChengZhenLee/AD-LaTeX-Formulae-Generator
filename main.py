@@ -1,4 +1,4 @@
-from constants import STARTEQUATION, LINEBREAK
+from constants import START_EQUATION, LINEBREAK
 from DerivativeComputer import DerivativeComputer
 from equation import Equation
 
@@ -13,7 +13,7 @@ def main():
 
         if inputModes and all(char in ['t', 'a'] for char in inputModes):
             print('-'*30)
-            print(STARTEQUATION)
+            print(START_EQUATION)
             print(LINEBREAK)
 
             equations:list[Equation] = DerivativeComputer.computeDerivative(inputModes, [])

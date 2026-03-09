@@ -34,7 +34,7 @@ class DerivativeComputer():
         # Perform tangent mode on the existing equations
         for equation in equations:
             newLeftVar:Variable = equation.left.derive(constants.TANGENT, order=order)
-            newEquation:Equation = Equation(newLeftVar, [])
+            newEquation:Equation = Equation(newLeftVar, [], order=order)
             
             for term in equation.right:
                 for i, var in enumerate(term.variables):
@@ -61,7 +61,8 @@ class DerivativeComputer():
         # Append the additional tangent "Y" equation
         newEquation:Equation = Equation(
             Y(constants.TANGENT, order=order),
-            right=[Term([F(order=order), X(constants.TANGENT, order=order)])]
+            right=[Term([F(order=order), X(constants.TANGENT, order=order)])],
+            order=order
         )
         result.append(newEquation)
 
@@ -90,7 +91,7 @@ class DerivativeComputer():
         # Creates a new equation for each unique input
         for uniqueInput in uniqueInputs:
             newLeftVar:Variable = uniqueInput.derive(constants.ADJOINT, order=order)
-            newEquation:Equation = Equation(newLeftVar, [])
+            newEquation:Equation = Equation(newLeftVar, [], order=order)
 
             for equation in equations:
                 newRightVar:Variable = equation.left.derive(constants.ADJOINT, order=order)
@@ -118,7 +119,10 @@ class DerivativeComputer():
         
         # Form the output "X" equation
         newX:X = X(constants.ADJOINT, order=order)
-        newEquation:Equation = Equation(left=newX, right=[Term([F(order=order), Y(constants.ADJOINT, order=order)])])
+        newEquation:Equation = Equation(left=newX, 
+            right=[Term([F(order=order), Y(constants.ADJOINT, order=order)])], 
+            order=order
+        )
         for equation in equations:
             newRightVar:Variable = equation.left.derive(constants.ADJOINT, order=order)
 
