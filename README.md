@@ -1,5 +1,5 @@
 
-# AD DERIVATIVE FORMULAE GENERATOR
+# AD LATEX FORMULAE GENERATOR
 
 ## Overview
 This project is part of the HiWi position at the Software Tools for Computational Engineering group at RWTH Aachen University.
