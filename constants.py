@@ -3,5 +3,7 @@ ADJOINT = 'a'
 F = 'F'
 X = 'X'
 Y = 'Y'
-MU = 'u'
-NU = 'v'
+MU = '\\mu'
+NU = '\\nu'
+STARTEQUATION = "\\mathbf{y}_j = F(\\mathbf{x}_i)"
+LINEBREAK = "\\\\[1em]"
