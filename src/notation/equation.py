@@ -33,6 +33,6 @@ class Equation:
 
         color:str = ORDER_COLORS.get(str(int(self.order) % UNIQUE_COLORS), "Black")
 
-        rightStr:str = f" \\\\ & \\color{{{color}}} \\: + ".join(str(m) for m in self.right) if self.right else "0"
+        rightStr:str = f" \\\\ & \\color{{{color}}} \\quad + ".join(str(m) for m in self.right) if self.right else "0"
 
         return f"\\color{{{color}}}{{{leftStr}}} & \\color{{{color}}}{{=}} \\ {rightStr}"

@@ -67,6 +67,14 @@ class DerivativeComputer():
         """
         result:list[Equation] = deepcopy(equations)
 
+        # Append the additional tangent "Y" equation
+        newEquation:Equation = Equation(
+            Y(constants.TANGENT, order=order),
+            right=[Monomial([F(order=order), X(constants.TANGENT, order=order)])],
+            order=order
+        )
+        result.append(newEquation)
+
         # Perform tangent mode on the existing equations
         for equation in equations:
             newLeftVar:Variable = equation.left.derive(constants.TANGENT, order=order)
@@ -93,15 +101,6 @@ class DerivativeComputer():
                     newEquation.right.append(newMonomial)
 
             result.append(newEquation)
-
-        
-        # Append the additional tangent "Y" equation
-        newEquation:Equation = Equation(
-            Y(constants.TANGENT, order=order),
-            right=[Monomial([F(order=order), X(constants.TANGENT, order=order)])],
-            order=order
-        )
-        result.append(newEquation)
 
         return result
 
@@ -184,7 +183,7 @@ class DerivativeComputer():
 
                 # The first element of a monomial is always the function f
                 f:Variable = monomial.variables[0]
-                newF:Variable = f.derive()
+                newF:Variable = f.derive(mode=constants.ADJOINT, order=order)
 
                 # Append new monomials to the new adjoint output equation
                 newMonomial:Monomial = Monomial([newF] + monomial.variables[1:] + [newRightVar])

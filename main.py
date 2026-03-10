@@ -1,6 +1,6 @@
 from src.DerivativeComputer import DerivativeComputer
 from src.utils.LatexExporter import LatexExporter
-from utils.TitleGenerator import TitleGenerator
+from src.utils.TitleGenerator import TitleGenerator
 from src.notation.equation import Equation
 from src.constants import FILENAME
 
@@ -24,7 +24,7 @@ def runTool():
             LatexExporter.createLatex(title, equations, FILENAME)
             print(f"LaTeX file generated as {FILENAME}.tex")
         else:
-            print("Error: Use only 't' (Tangent) or 'a' (Adjoint).")
+            print("Error: Use only 't' (Tangent) or 'a' (Adjoint), or 'e' to exit")
 
         print()
 
