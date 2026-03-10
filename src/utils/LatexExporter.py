@@ -4,13 +4,14 @@ from src.constants import START_EQUATION, LINEBREAK, FILENAME
 
 class LatexExporter:
     @staticmethod
-    def createLatex(equations: list[Equation], filename: str = FILENAME) -> None:
+    def createLatex(title:str, equations:list[Equation], filename:str = FILENAME) -> None:
         """Generate a LaTeX document containing mathematical equations.
         This function creates a .tex file with a formatted LaTeX document that displays
         a collection of equations, starting with an initial equation and followed by
         calculated derivative equations.
 
         Args:
+            title (str): The title of the LaTeX document.
             equations (list[Equation]): A list of Equation objects representing the
                 calculated derivatives or related equations to be included in the document.
             filename (str, optional): The name of the output .tex file (without extension).
@@ -25,7 +26,7 @@ class LatexExporter:
             "\\usepackage[dvipsnames]{xcolor}",
             "\\allowdisplaybreaks",
             "\\begin{document}",
-            "\\section*{Generated Derivatives}",
+            f"\\section*{{{title}}}",
             "\\begin{align*}"
         ]
 

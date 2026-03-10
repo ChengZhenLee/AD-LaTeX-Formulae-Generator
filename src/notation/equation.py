@@ -1,6 +1,6 @@
 from src.notation.monomial import Monomial
 from src.notation.variable import Variable
-from src.constants import ORDER_COLORS
+from src.constants import ORDER_COLORS, UNIQUE_COLORS
 
 
 class Equation:
@@ -31,7 +31,7 @@ class Equation:
     def __str__(self)->str:
         leftStr:str = str(self.left)
 
-        color:str = ORDER_COLORS.get(self.order, "Black")
+        color:str = ORDER_COLORS.get(str(int(self.order) % UNIQUE_COLORS), "Black")
 
         rightStr:str = f" \\\\ & \\color{{{color}}} \\: + ".join(str(m) for m in self.right) if self.right else "0"
 

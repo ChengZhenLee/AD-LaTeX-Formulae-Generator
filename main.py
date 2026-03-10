@@ -1,5 +1,6 @@
 from src.DerivativeComputer import DerivativeComputer
 from src.utils.LatexExporter import LatexExporter
+from utils.TitleGenerator import TitleGenerator
 from src.notation.equation import Equation
 from src.constants import FILENAME
 
@@ -19,7 +20,8 @@ def runTool():
         
         if inputModes and all(char in "ta" for char in inputModes):
             equations:list[Equation] = DerivativeComputer.computeDerivative(inputModes, [])
-            LatexExporter.createLatex(equations, FILENAME)
+            title:str = TitleGenerator.generateTitle(inputModes)
+            LatexExporter.createLatex(title, equations, FILENAME)
             print(f"LaTeX file generated as {FILENAME}.tex")
         else:
             print("Error: Use only 't' (Tangent) or 'a' (Adjoint).")
