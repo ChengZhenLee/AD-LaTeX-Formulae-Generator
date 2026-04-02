@@ -1,0 +1,9 @@
+Validator
+
+1. Get the relevant symbolic equation with the highest order derivative.
+2. Using SymPy, calculate relevant derivative tensors of F.
+3. Using the predefined Variable classes and their stored indices, determine 
+    their dimensions and therefore their "seeding" possibilities.
+4. Generate the corresponding C++ code.
+5. Seed the symbolic equation and the C++ code with the same seeds.
+6. Compare the outputs.
