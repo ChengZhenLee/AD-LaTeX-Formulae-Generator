@@ -1,9 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Launcher for Unix-like shells: Linux, macOS, WSL, and Git Bash on Windows.
+# For native Windows (cmd.exe / PowerShell) use run_tool.bat instead.
 
-if ! command -v python3 &> /dev/null
-then
-    echo "Error: Python3 is not installed. Please install it to continue."
+# Prefer `python3`, but fall back to `python` since some environments
+# (notably plain Python installs on Windows) only provide the latter.
+if command -v python3 &> /dev/null; then
+    PYTHON=python3
+elif command -v python &> /dev/null; then
+    PYTHON=python
+else
+    echo "Error: Python 3 is not installed. Please install it to continue." >&2
     exit 1
 fi
 
-python3 main.py
+"$PYTHON" main.py
