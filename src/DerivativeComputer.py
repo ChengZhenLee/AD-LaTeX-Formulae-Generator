@@ -81,7 +81,9 @@ class DerivativeComputer():
             newEquation:Equation = Equation(newLeftVar, [], order=order)
             
             for monomial in equation.right:
-                # Perform product rule on each variable in the monomial
+                # Product rule: differentiating a product of variables yields one
+                # new term per factor, where that factor is replaced by its
+                # derivative and every other factor is left unchanged.
                 for i, var in enumerate(monomial.variables):
                     newMonomial:Monomial = Monomial([])
                     newVar:Variable = var.derive(constants.TANGENT, order=order)
@@ -90,14 +92,16 @@ class DerivativeComputer():
                     tempVar.pop(i)
 
                     if var.name == constants.F:
-                        # The function F should always be at the front
+                        # Differentiating F introduces a chain-rule factor of the
+                        # tangent input X; F must stay at the front of the
+                        # monomial by convention, with the new X appended last.
                         newMonomial.variables = [newVar]
                         newMonomial.variables += tempVar
                         newMonomial.variables.append(X(constants.TANGENT, order=order))
                     else:
                         newMonomial.variables = tempVar
                         newMonomial.variables.append(newVar)
-                    
+
                     newEquation.right.append(newMonomial)
 
             result.append(newEquation)
@@ -127,7 +131,10 @@ class DerivativeComputer():
         result:list[Equation] = deepcopy(equations)
         uniqueInputs:list[Variable] = []
 
-        # Find all unique right hand side 'inputs'
+        # Find all unique right hand side 'inputs'.
+        # In reverse mode, every distinct variable that appears as an input
+        # to some equation accumulates its own adjoint (sensitivity)
+        # equation, gathering a contribution from each equation it feeds into.
         for equation in equations:
             curRight:list[Monomial] = equation.right
 
@@ -146,6 +153,10 @@ class DerivativeComputer():
             newLeftVar:Variable = uniqueInput.derive(constants.ADJOINT, order=order)
             newEquation:Equation = Equation(newLeftVar, [], order=order)
 
+            # Chain rule (reverse mode): the adjoint of uniqueInput is the sum,
+            # over every equation whose right-hand side uses it, of that
+            # monomial with uniqueInput replaced by the adjoint of that
+            # equation's own left-hand side (its downstream sensitivity).
             for equation in equations:
                 newRightVar:Variable = equation.left.derive(constants.ADJOINT, order=order)
 

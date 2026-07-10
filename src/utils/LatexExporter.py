@@ -39,6 +39,8 @@ class LatexExporter:
 
         content += ["\\end{align*}", "\\end{document}"]
 
-        with open(f"{filename}.tex", 'w') as outFile:
+        # Explicit UTF-8 avoids the file being written with the platform's
+        # default encoding (e.g. cp1252 on some Windows locales), which
+        # could otherwise mis-encode non-ASCII LaTeX content.
+        with open(f"{filename}.tex", 'w', encoding='utf-8') as outFile:
             outFile.write("\n".join(content))
-        outFile.close()

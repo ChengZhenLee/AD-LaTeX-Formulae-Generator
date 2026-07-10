@@ -31,6 +31,8 @@ class Equation:
     def __str__(self)->str:
         leftStr:str = str(self.left)
 
+        # Cycle through the palette (mod UNIQUE_COLORS) so arbitrarily high
+        # derivative orders still map to a defined color instead of KeyError.
         color:str = ORDER_COLORS.get(str(int(self.order) % UNIQUE_COLORS), "Black")
 
         rightStr:str = f" \\\\ & \\color{{{color}}} \\quad + ".join(str(m) for m in self.right) if self.right else "0"

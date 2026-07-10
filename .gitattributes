@@ -1,0 +1,9 @@
+# Normalize line endings so the tool behaves the same on every platform.
+* text=auto eol=lf
+
+# Shell scripts must keep LF endings, or the "#!/usr/bin/env bash" shebang
+# breaks on Linux/macOS/WSL if checked out with core.autocrlf=true.
+*.sh text eol=lf
+
+# Windows batch files conventionally use CRLF.
+*.bat text eol=crlf

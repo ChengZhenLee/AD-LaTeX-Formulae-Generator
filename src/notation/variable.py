@@ -59,13 +59,19 @@ class Variable:
         newSub = self.sub.copy()
         newSup = self.sup.copy()
 
+        # Tangent (forward-mode) derivatives are conventionally written as a
+        # trailing superscript direction index (nu), since forward mode
+        # propagates directional derivatives "downstream". Adjoint
+        # (reverse-mode) derivatives are written as a leading subscript
+        # index (mu), since reverse mode propagates sensitivities
+        # "upstream" from the output back to the input.
         if mode == constants.TANGENT:
             newSup.append(order)
             newIndices.append(Index(constants.NU, order))
         elif mode == constants.ADJOINT:
             newSub.append(order)
             newIndices = [Index(constants.MU, order)] + newIndices
-        
+
         return Variable(self.name, newIndices, newSub, newSup, order)
     
 
