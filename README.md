@@ -104,3 +104,9 @@ src/
     ├── TitleGenerator.py        Human-readable section titles
     └── LatexExporter.py         Assembles and writes the final .tex document
 ```
+
+## Research context
+
+This tool was built to support the visualizations in an
+accompanying research paper:
+> Naumann, U. (2026) Nested Algorithmic Differentiation Revisited
